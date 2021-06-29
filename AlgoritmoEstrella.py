@@ -11,6 +11,8 @@ def F_heuristica(a, b):
 def F_Estrella(mapa, ini, fin):
 
     #defino posiciones adyacentes para cada potencial posicion desde el punto en que me encuentro.
+    #Para cada posicion se evaluaran 8 posiciones adyacentes (son 8 y no 4 porque se permiten movs en diagona)
+
     adyacentes = [(0,1),(0,-1),(1,0),(-1,0),(1,1),(1,-1),(-1,1),(-1,-1)]
     #Set con posiciones evaluadas y descartadas que ya no es necesario evaluar
     posiciones_descartadas = set()
