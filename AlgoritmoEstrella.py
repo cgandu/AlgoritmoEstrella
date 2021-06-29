@@ -137,3 +137,30 @@ final = (0,19)
 ruta_mas_corta = F_Estrella(grilla, inicio, final)
 
 print(ruta_mas_corta)
+
+coor_X = []
+coor_Y = []
+
+for paso in (range(0, len(ruta_mas_corta))):
+    
+    x = ruta_mas_corta[paso][0]
+
+    y = ruta_mas_corta[paso][1]
+
+    coor_X.append(x)
+
+    coor_Y.append(y)
+
+
+#ploteo mapa y caminos
+#tamaño 10pulx10pulg
+fig, ax = plt.subplots(figsize=(10,10))
+
+ax.imshow(grilla, cmap=plt.cm.Dark2)
+#marcador inicio es el de color amarillo
+ax.scatter(inicio[1],inicio[0], marker = "*", color = "yellow", s = 200)
+#marcador final es del color rojo
+ax.scatter(final[1],final[0], marker = "*", color = "red", s = 200)
+ax.plot(coor_Y, coor_X, color="black")
+
+plt.show()
