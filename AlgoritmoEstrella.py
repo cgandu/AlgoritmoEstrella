@@ -136,6 +136,13 @@ final = (0,19)
 
 ruta_mas_corta = F_Estrella(grilla, inicio, final)
 
+#agrego posicion de inicio a la ruta ya que no la incluye
+ruta_mas_corta = ruta_mas_corta + [inicio]
+
+#F_Estrella me devuelve la ruta en reversa, pues rastrea los 'desde' para cada posicion, asi que lo invierto
+
+ruta_mas_corta = ruta_mas_corta[::-1]
+
 print(ruta_mas_corta)
 
 coor_X = []
