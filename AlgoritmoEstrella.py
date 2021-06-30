@@ -5,7 +5,7 @@ import heapq
 #defino funcion heuristica que estime distancia en inea recta a destino ignorando obstaculos, como distancia Manhattan
 
 def F_heuristica(a, b):
-    #calculo distancia como un pitagoras
+    #calculo distancia como un pitagoras (distancia directa en diagonal)
     return np.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
 
 def F_Estrella(mapa, ini, fin):
@@ -103,22 +103,19 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure 
 
 #consideramos una grilla de 20x20 en la que los ceros son transitables y los 1 son barreras
-def funcionRandom1():
-    return np.random.choice(np.arange(0, 2), p=[0.67, 0.33])
-
-def funcionRandom2():
-    return np.random.choice(np.arange(0, 2), p=[0.33, 0.67])
+def funcionRandom(prob_de_0, prob_de_1):
+    return np.random.choice(np.arange(0, 2), p=[prob_de_0, prob_de_1])
 
 grilla = np.empty((20,20), dtype=int)
 
 def llenoGrilla():
     for i in range(20):
         for j in range(20):
-            grilla[i, j] = funcionRandom1()
-        
+            grilla[i, j] = funcionRandom(0.67, 0.33)
+    #agrego un poco mas de obstaculos en centro de grilla solo por diversion    
     for i in range (5, 15):
         for j in range(5, 15):
-            grilla [i, j] = funcionRandom2()    
+            grilla [i, j] = funcionRandom(0.2, 0.8)    
     
 #indicamos inicio y final de recorrido
 
@@ -138,7 +135,7 @@ while True:
         ruta_mas_corta = ruta_mas_corta[::-1]
         
     except:
-        print("Hay error")
+        print("Mapa generado no tiene solucion. Se generara otro")
         continue
     else:
         
