@@ -103,45 +103,48 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure 
 
 #consideramos una grilla de 20x20 en la que los ceros son transitables y los 1 son barreras
-grilla = np.array([
+def funcionRandom1():
+    return np.random.choice(np.arange(0, 2), p=[0.67, 0.33])
 
-[0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,0,0],
-[0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,0,0],
-[0,0,0,0,0,0,0,1,1,1,1,0,1,0,0,1,0,1,0,0],
-[0,0,0,0,0,1,1,1,0,0,1,1,1,0,0,1,0,1,0,0],
-[0,1,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0],
-[0,1,0,1,0,0,0,0,0,1,1,0,1,0,1,1,1,1,1,1],
-[0,1,0,1,0,0,1,0,0,1,1,0,1,0,0,0,0,0,1,0],
-[0,0,0,1,0,0,1,0,1,1,1,0,1,0,0,0,0,0,1,0],
-[0,0,0,1,0,0,1,0,0,1,1,0,1,1,1,1,1,0,0,0],
-[0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1,0,1,0],
-[0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,0,1,0,1,0],
-[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
-[0,1,1,1,1,1,0,1,0,0,0,0,0,1,0,0,1,1,0,1],
-[0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1],
-[0,1,0,0,0,0,1,1,1,1,1,1,0,1,0,1,0,1,0,1],
-[0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,1,0,1],
-[0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0],
-[0,1,0,0,1,0,1,1,1,1,1,0,1,0,1,1,1,1,1,1],
-[0,1,1,0,1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0],
-[0,0,0,0,1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0]])
+def funcionRandom2():
+    return np.random.choice(np.arange(0, 2), p=[0.33, 0.67])
 
- 
+grilla = np.empty((20,20), dtype=int)
 
+def llenoGrilla():
+    for i in range(20):
+        for j in range(20):
+            grilla[i, j] = funcionRandom1()
+        
+    for i in range (5, 15):
+        for j in range(5, 15):
+            grilla [i, j] = funcionRandom2()    
+    
 #indicamos inicio y final de recorrido
 
 inicio = (19,0)
-
 final = (0,19)
 
-ruta_mas_corta = F_Estrella(grilla, inicio, final)
+while True:
+    try:
+        
+        llenoGrilla()        
+        ruta_mas_corta = F_Estrella(grilla, inicio, final)
+        
+        #agrego posicion de inicio a la ruta ya que no la incluye
+        ruta_mas_corta = ruta_mas_corta + [inicio]
+        
+        #F_Estrella me devuelve la ruta en reversa, pues rastrea los 'desde' para cada posicion, asi que lo invierto
+        ruta_mas_corta = ruta_mas_corta[::-1]
+        
+    except:
+        print("Hay error")
+        continue
+    else:
+        
+        break
 
-#agrego posicion de inicio a la ruta ya que no la incluye
-ruta_mas_corta = ruta_mas_corta + [inicio]
 
-#F_Estrella me devuelve la ruta en reversa, pues rastrea los 'desde' para cada posicion, asi que lo invierto
-
-ruta_mas_corta = ruta_mas_corta[::-1]
 
 print(ruta_mas_corta)
 
