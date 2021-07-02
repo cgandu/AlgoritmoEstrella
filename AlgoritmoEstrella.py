@@ -168,6 +168,18 @@ ax.imshow(grilla, cmap=plt.cm.Paired)
 ax.scatter(inicio[1],inicio[0], marker = "*", color = "yellow", s = 200)
 #marcador final es del color rojo
 ax.scatter(final[1],final[0], marker = "*", color = "red", s = 200)
-ax.plot(coor_Y, coor_X, color="yellow")
+#ax.plot(coor_Y, coor_X, color="yellow")
 
 plt.show()
+
+resp = input("Desea ver el camino mas corto generado? 'S'/'N': ")
+
+if resp == "S":
+    fig, ax = plt.subplots(figsize=(10,10))
+
+    ax.imshow(grilla, cmap=plt.cm.Paired)
+    #marcador inicio es el de color amarillo
+    ax.scatter(inicio[1],inicio[0], marker = "*", color = "yellow", s = 200)
+    #marcador final es del color rojo
+    ax.scatter(final[1],final[0], marker = "*", color = "red", s = 200)
+    ax.plot(coor_Y, coor_X, color="yellow")
