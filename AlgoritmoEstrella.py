@@ -123,7 +123,7 @@ def F_Estrella(mapa, ini, fin):
                 costoF[pos_de_adyacente] = costo_estimado_en_adyacente + F_Distancia_Recta(pos_de_adyacente, fin)
 
                 heapq.heappush(listaAbierta, (costoF[pos_de_adyacente], pos_de_adyacente)) 
-
+    return False
 
 import numpy as np
 
