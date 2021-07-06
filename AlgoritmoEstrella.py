@@ -2,9 +2,9 @@ import heapq
 
 
 
-#defino funcion heuristica que estime distancia en inea recta a destino ignorando obstaculos, como distancia Manhattan
+#defino funcion que devuelva distancia en linea recta a destino
 
-def F_heuristica(a, b):
+def F_Distancia_Recta(a, b):
     #calculo distancia como un pitagoras (distancia directa en diagonal)
     return np.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
 
@@ -24,19 +24,19 @@ def F_Estrella(mapa, ini, fin):
     costoG = {ini:0}
 
     #Costo de funcion F para cada iteracion
-    costoF = {ini:F_heuristica(ini, fin)}
+    costoF = {ini:F_Distancia_Recta(ini, fin)}
 
     #lista con las posiciones consideradas para determinar en que direccion es el camino mas corto
     listaAbierta = []
     
     #Agrego costoF y posicion inicial a listaAbierta y
-    # uso el modulo heapq que mantiene siempre ordenado con el primer elemento el mas chico
-    #onda priority Queue
+    # uso el modulo heapq que mantiene siempre ordenado la lista y y en el q el primero elemento es siempre el mas chico
+    # https://docs.python.org/3/library/heapq.html
     heapq.heappush(listaAbierta, (costoF[ini], ini))
 
     #mientras listaAbierta tenga todavia posiciones a considerar
     while listaAbierta:
-        #de la lista abierta tomo el primer elemento -que va a ser el destino inmediato de menor costoF- y retorna posicion '[1]
+        #de la lista abierta tomo el primer elemento -que va a ser la pos con menor costoF de la lista- y obtengo posicion
         actual = heapq.heappop(listaAbierta)[1]
 
         #si llegue al fin del recorrido, voy rastreando hacia atras posicion x posicion mientras haya una pos anterior existente
@@ -57,41 +57,41 @@ def F_Estrella(mapa, ini, fin):
         for i, j in adyacentes:
 
             pos_de_adyacente = actual[0] + i, actual[1] + j            
+    
+            costo_estimado_en_adyacente = costoG[actual] + F_Distancia_Recta(actual, pos_de_adyacente)
 
-            costo_estimado = costoG[actual] + F_heuristica(actual, pos_de_adyacente)
-
-                #chequeo que el pos_de_adyacente no escape a las dimensiones del arreglo/mapa.
-                #Si est fuera del mapa o es inicial lo ignoro y sigo con siguiente pos_de_adyacente
+                # chequeo que el pos_de_adyacente no escape a las dimensiones del arreglo/mapa.
+                # Si est fuera del mapa o es '1' lo ignoro y sigo con siguiente pos_de_adyacente
             if 0 <= pos_de_adyacente[0] < mapa.shape[0]:
 
                 if 0 <= pos_de_adyacente[1] < mapa.shape[1]:                
 
                     if mapa[pos_de_adyacente[0]][pos_de_adyacente[1]] == 1:
-                        #ini
-                        continue
+                        # obstaculo -paso al siguiente/continuo
+                        continue 
 
                 else:
-                    # llegue limite mapa en y
+                    # llegue limite mapa en y -paso al siguiente/continuo
                     continue
 
             else:
-                 # llegue limite mapa en x
+                 # llegue limite mapa en x -paso al siguiente/continuo
                 continue
             
-             #si pos_de_adyacente esta en lista de descartados y el costo_estimado es mayor
-             # que el costoG para esa pos, lo ignoro tb 
-            if pos_de_adyacente in posiciones_descartadas and costo_estimado >= costoG.get(pos_de_adyacente, 0):
-
-                continue
+             #si pos_de_adyacente esta en lista de descartados y el costo_estimado_en_adyacente es mayor
+             # que el costoG para esa pos, no vale la pena volver a considerarla y contnuo/paso al siguiente
+            if pos_de_adyacente in posiciones_descartadas and costo_estimado_en_adyacente >= costoG.get(pos_de_adyacente, 0):
+                
+                continue 
  
 
-            if  costo_estimado < costoG.get(pos_de_adyacente, 0) or pos_de_adyacente not in [i[1]for i in listaAbierta]:
+            if  costo_estimado_en_adyacente < costoG.get(pos_de_adyacente, 0) or pos_de_adyacente not in [i[1]for i in listaAbierta]:
 
                 posicion_desde[pos_de_adyacente] = actual
 
-                costoG[pos_de_adyacente] = costo_estimado
+                costoG[pos_de_adyacente] = costo_estimado_en_adyacente
 
-                costoF[pos_de_adyacente] = costo_estimado + F_heuristica(pos_de_adyacente, fin)
+                costoF[pos_de_adyacente] = costo_estimado_en_adyacente + F_Distancia_Recta(pos_de_adyacente, fin)
 
                 heapq.heappush(listaAbierta, (costoF[pos_de_adyacente], pos_de_adyacente)) 
 
@@ -111,11 +111,12 @@ grilla = np.empty((20,20), dtype=int)
 def llenoGrilla():
     for i in range(20):
         for j in range(20):
-            grilla[i, j] = funcionRandom(0.67, 0.33)
+            grilla[i, j] = funcionRandom(0.5, 0.5)
     #agrego un poco mas de obstaculos en centro de grilla solo por diversion    
     for i in range (5, 15):
         for j in range(5, 15):
-            grilla [i, j] = funcionRandom(0.2, 0.8)    
+            grilla [i, j] = funcionRandom(0.5, 0.5)
+
     
 #indicamos inicio y final de recorrido
 
@@ -168,18 +169,10 @@ ax.imshow(grilla, cmap=plt.cm.Paired)
 ax.scatter(inicio[1],inicio[0], marker = "*", color = "yellow", s = 200)
 #marcador final es del color rojo
 ax.scatter(final[1],final[0], marker = "*", color = "red", s = 200)
-#ax.plot(coor_Y, coor_X, color="yellow")
+ax.plot(coor_Y, coor_X, color="yellow")
 
 plt.show()
 
-resp = input("Desea ver el camino mas corto generado? 'S'/'N': ")
 
-if resp == "S":
-    fig, ax = plt.subplots(figsize=(10,10))
-
-    ax.imshow(grilla, cmap=plt.cm.Paired)
-    #marcador inicio es el de color amarillo
-    ax.scatter(inicio[1],inicio[0], marker = "*", color = "yellow", s = 200)
-    #marcador final es del color rojo
-    ax.scatter(final[1],final[0], marker = "*", color = "red", s = 200)
-    ax.plot(coor_Y, coor_X, color="yellow")
+    
+    
