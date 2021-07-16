@@ -3,6 +3,9 @@ Implementacion funcional en python de algoritmo estrella para variedad de mapas.
 
 Utiliza modulos heapq de python (https://docs.python.org/3/library/heapq.html), librerias NumPy (https://numpy.org/doc/stable/user/whatisnumpy.html) y Matplotlib para graficar ploteo (https://matplotlib.org/)
 
+Probar ejecutando script en un jupyter notebook online (https://jupyter.org/try ) o local (asegurarse de instalar los modulos necesarios).
+
+Para ver efecto de ponderacion de costo se puede modificar los distintos 'multiplicadores' de terreno para evaluar efectividad
 
 Basada en: 
 https://code.activestate.com/recipes/578919-python-a-pathfinding-with-binary-heap/ -- de Christian Careaga -- y en https://www.analytics-link.com/post/2018/09/14/applying-the-a-path-finding-algorithm-in-python-part-1-2d-square-grid -- Incorpora Matplotlib
